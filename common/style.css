@@ -1,0 +1,151 @@
+@charset 'utf-8';
+:root {
+    background-color: #f0e2ff;
+}
+.wrap {
+    max-width: 600px;
+    width: calc(100% - 2rem);
+    margin: 1rem auto;
+    height: calc(100vh - 2rem);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+    background-color: #f6f5f5;
+    border-radius: 2rem;
+}
+.wrap header {
+    padding: 2rem;
+}
+.wrap main {
+    flex: 1;
+    padding: 1rem;
+    overflow-y: auto;
+}
+.wrap main::-webkit-scrollbar {
+    width: 5px;
+}
+
+.wrap main::-webkit-scrollbar-thumb {
+    background-color: #666;
+    border-radius: 10px;
+}
+.wrap main:hover::-webkit-scrollbar-thumb {
+    background-color: #2f3542;
+}
+.wrap main::-webkit-scrollbar-track {
+    background-color: grey;
+    border-radius: 10px;
+    box-shadow: inset 0px 0px 5px white;
+}
+header h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    padding-bottom: 1rem;
+}
+#searchInput {
+    margin-top: 1rem;
+    width: 60%;
+    height: 2rem;
+    border-radius: 1rem;
+    border: 1px solid #999;
+    padding: 0 1rem;
+}
+.items {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+}
+.item {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 1rem;
+    display: flex;
+    background-color: white;
+    position: relative;
+    flex-direction: column;
+    overflow: hidden;
+    height: 80px;
+}
+.item.on {
+    height: fit-content;
+}
+.itemWrap {
+    display: flex;
+    width: 100%;
+    margin-bottom: 2rem;
+}
+.item h2 {
+    font-weight: bold;
+    line-height: 1.5rem;
+}
+.item .albumImg {
+    order: -1;
+    width: 50px;
+    height: 50px;
+    margin-right: 1rem;
+    position: relative;
+    
+}
+.item .albumImg::before {
+    content: '\2b';
+    font-family: 'Font Awesome 5 Free'; 
+    font-weight: 600;
+    font-size: 2rem;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.3);
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.5s;
+}
+.item .albumImg:hover::before {
+    visibility: visible;
+    opacity: 1;
+    transform: rotate(360deg);
+}
+.item img {
+    width: 100%;
+    min-width: 50px;
+}
+.itemText {
+    display: block;
+    overflow: hidden;
+}
+.itemText h2 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.itemText .singer {
+    padding-bottom: 2rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.lyrics {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+footer {
+    display: flex;
+    justify-content: space-around;
+    border-top: 1px solid #d9d0e3;
+    padding: 1.5rem 0;
+    background-color: white;
+    border-radius: 0 2rem 2rem;
+}
+
+footer a {
+    color: #9586a8;
+}
+footer a.active {
+    color: #7203ff;
+}
