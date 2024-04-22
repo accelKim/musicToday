@@ -12,7 +12,7 @@ const myPage = document.querySelector('.myPage');
 const options = {
     method: 'GET',
     headers: {
-        'X-RapidAPI-Key': 'ef3118dbd4mshac48c8e2a6b1a24p1ead0fjsn684d8ccb26ce',
+        'X-RapidAPI-Key': '938cb044b1mshb4f02368ca7bccep1f7e1fjsn0227e4583f95',
         'X-RapidAPI-Host': 'genius-song-lyrics1.p.rapidapi.com',
     },
 };
