@@ -1,4 +1,4 @@
-const lyricsRadio = document.getElementById('lyricsRadio');
+const artistRadio = document.getElementById('artistRadio');
 const titleRadio = document.getElementById('titleRadio');
 const searchInput = document.getElementById('searchInput');
 const searchForm = document.getElementById('searchForm');
@@ -16,14 +16,12 @@ const options = {
         'X-RapidAPI-Host': 'genius-song-lyrics1.p.rapidapi.com',
     },
 };
-
 itemList.addEventListener('click', (e) => {
     const clickedAlbumImg = e.target.closest('.albumImg');
     if (clickedAlbumImg) {
         e.stopPropagation();
         const parentItem = clickedAlbumImg.closest('.item');
 
-        // 부모 요소가 item 클래스를 가지고 있는 경우에만 처리
         if (parentItem) {
             const clickedItem = parentItem;
             const itemData = {
@@ -32,49 +30,38 @@ itemList.addEventListener('click', (e) => {
                 singer: clickedItem.querySelector('.singer').textContent,
                 src: clickedItem.querySelector('img').src,
                 lyrics: clickedItem.querySelector('.lyrics').innerHTML,
-                // 필요한 정보들을 추가로 저장할 수 있습니다.
             };
 
             // 로컬 스토리지에서 기존 데이터 가져오기
             let storedData = JSON.parse(localStorage.getItem('clickedItemData'));
             if (!storedData) {
-                storedData = []; // 저장된 데이터가 없으면 빈 배열 생성
+                storedData = [];
             }
 
             // 중복 데이터 확인
             const isDuplicate = storedData.some((data) => data.id === itemData.id);
 
-            // 중복된 데이터가 없는 경우에만 추가
             if (!isDuplicate) {
-                console.log('저장 되었음');
-                // 새로운 데이터 추가
+                alert('저장되었습니다!');
                 storedData.push(itemData);
-
-                // 로컬 스토리지에 저장
                 localStorage.setItem('clickedItemData', JSON.stringify(storedData));
             } else {
-                alert(`이미 데이터 있음 ㅋ`);
+                alert(`이미 마이리스트에 있음`);
             }
+            return;
         }
-    }
-});
-
-itemList.addEventListener('click', (e) => {
-    const clickedItem = e.target.closest('.item');
-
-    if (clickedItem) {
-        // 클릭한 요소에 클래스 추가
-        clickedItem.classList.toggle('on');
-
-        // 나머지 요소의 클래스 제거
-        const allItems = document.querySelectorAll('.item');
-        allItems.forEach((item) => {
-            if (item !== clickedItem) {
-                item.classList.remove('on');
-            }
-        });
-
-        getMusicLyrics(clickedItem.id);
+    } else {
+        const clickedItem = e.target.closest('.item');
+        if (clickedItem) {
+            clickedItem.classList.toggle('on');
+            const allItems = document.querySelectorAll('.item');
+            allItems.forEach((item) => {
+                if (item !== clickedItem) {
+                    item.classList.remove('on');
+                }
+            });
+            getMusicLyrics(clickedItem.id);
+        }
     }
 });
 
@@ -89,24 +76,24 @@ footer.addEventListener('click', (e) => {
 });
 myPage.addEventListener('click', () => {
     const myMusic = JSON.parse(localStorage.getItem('clickedItemData'));
-    console.log(myMusic);
-    if (myMusic && myMusic.length > 0) {
+    // console.log(myMusic);
+    if (myMusic == null) {
+        itemList.innerHTML = `<li class='nolist'>마이리스트가 없습니다.</li>`;
+        return;
+    } else if (myMusic && myMusic.length > 0) {
         renderMyMusics(myMusic);
     }
 });
-// 폼 제출 이벤트 리스너 추가
+
 searchForm.addEventListener('submit', (e) => {
-    e.preventDefault(); // 폼 제출 기본 동작 방지
+    e.preventDefault();
 
-    // 라디오 버튼 값 가져오기
-    const searchType = lyricsRadio.checked ? 'lyrics' : 'title';
+    const searchType = artistRadio.checked ? 'artist' : 'title';
 
-    // 입력 필드 값 가져오기
     const getSearchInfo = searchInput.value;
 
-    // 가져온 값 확인
-    console.log('Search Type:', searchType);
-    console.log('Search Keyword:', getSearchInfo);
+    // console.log('Search Type:', searchType);
+    // console.log('Search Keyword:', getSearchInfo);
 
     if (searchType == 'title') {
         getMusicTitle(getSearchInfo);
@@ -121,8 +108,8 @@ const getMusicTitle = async (searchInfo) => {
         const response = await fetch(url, options);
         const data = await response.json();
         let musicList = data.hits;
-        console.log(data);
-        console.log(musicList);
+        // console.log(data);
+        // console.log(musicList);
         renderMusics(musicList);
     } catch (error) {
         console.error(error);
@@ -135,8 +122,8 @@ const getMusicLyrics = async (songInfo) => {
         const response = await fetch(url, options);
         const data = await response.json();
         let lyricsIndex = data.lyrics.lyrics.body.html;
-        console.log(data);
-        console.log(lyricsIndex);
+        // console.log(data);
+        // console.log(lyricsIndex);
         createLyrics(lyricsIndex);
     } catch (error) {
         console.error(error);
@@ -181,7 +168,7 @@ const createLyrics = (lyricsIndex) => {
         lyricsWrap.innerHTML = `<p class='nolist'>검색결과가 없습니다.</p>`;
         return;
     }
-    // 선택한 항목의 가사를 표시할 요소를 찾아서 해당 요소의 innerHTML을 설정
+
     const selectedItem = document.querySelector('.item.on > .itemWrap > .itemText');
     if (selectedItem) {
         const lyricsElement = selectedItem.querySelector('.lyrics');
@@ -197,10 +184,6 @@ const renderMusics = (musicList) => {
     itemList.innerHTML = musicHtml;
 };
 const renderMyMusics = (musicList) => {
-    if (musicList.length == 0) {
-        itemList.innerHTML = `<li class='nolist'>검색결과가 없습니다.</li>`;
-        return;
-    }
     const musicHtml = musicList.map((music) => createMyMusic(music)).join('');
     itemList.innerHTML = musicHtml;
 };
