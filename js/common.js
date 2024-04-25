@@ -17,6 +17,9 @@ const options = {
         'X-RapidAPI-Host': 'genius-song-lyrics1.p.rapidapi.com',
     },
 };
+window.onload = function () {
+    window.location.href = './page/login.html';
+};
 itemList.addEventListener('click', (e) => {
     const clickedAlbumImg = e.target.closest('.albumImg');
     if (clickedAlbumImg) {
