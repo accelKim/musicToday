@@ -46,7 +46,7 @@ function login() {
 
     if (userName.value == storedName && userPw.value == storedPw) {
         alert('로그인 완료');
-        location.replace('./index.html');
+        location.replace('../index.html');
     } else {
         alert('비밀번호나 아이디가 틀렸습니다');
     }
