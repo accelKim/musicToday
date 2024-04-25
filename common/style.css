@@ -85,11 +85,10 @@ header h1 {
     height: 50px;
     margin-right: 1rem;
     position: relative;
-    
 }
 .item .albumImg::before {
     content: '\2b';
-    font-family: 'Font Awesome 5 Free'; 
+    font-family: 'Font Awesome 5 Free';
     font-weight: 600;
     font-size: 2rem;
     position: absolute;
@@ -129,11 +128,20 @@ header h1 {
     overflow: hidden;
     text-overflow: ellipsis;
 }
-
+embed {
+    height: 50px;
+    position: relative;
+    width: 200px;
+}
+.musicPlayer p {
+    font-weight: bold;
+    padding-bottom: 1rem;
+}
 .lyrics {
     width: 100%;
     display: flex;
     justify-content: center;
+    flex-direction: column;
 }
 footer {
     display: flex;

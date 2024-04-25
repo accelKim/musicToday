@@ -9,10 +9,11 @@ const items = document.querySelectorAll('.item');
 const footer = document.querySelector('footer');
 const footerBtns = document.querySelectorAll('footer > a');
 const myPage = document.querySelector('.myPage');
+
 const options = {
     method: 'GET',
     headers: {
-        'X-RapidAPI-Key': '938cb044b1mshb4f02368ca7bccep1f7e1fjsn0227e4583f95',
+        'X-RapidAPI-Key': 'baa1183da2msh20e50e6e008ef61p16540bjsn1ee33e994319',
         'X-RapidAPI-Host': 'genius-song-lyrics1.p.rapidapi.com',
     },
 };
@@ -30,6 +31,7 @@ itemList.addEventListener('click', (e) => {
                 singer: clickedItem.querySelector('.singer').textContent,
                 src: clickedItem.querySelector('img').src,
                 lyrics: clickedItem.querySelector('.lyrics').innerHTML,
+                music: clickedItem.querySelector('embed').src,
             };
 
             // 로컬 스토리지에서 기존 데이터 가져오기
@@ -60,10 +62,13 @@ itemList.addEventListener('click', (e) => {
                     item.classList.remove('on');
                 }
             });
+            // 클릭된 아이템의 id를 전달하여 getMusic 및 getMusicLyrics 호출
+            getMusic(clickedItem.id);
             getMusicLyrics(clickedItem.id);
         }
     }
 });
+
 
 footer.addEventListener('click', (e) => {
     const clickedLink = e.target.closest('footer > a');
@@ -91,9 +96,6 @@ searchForm.addEventListener('submit', (e) => {
     const searchType = artistRadio.checked ? 'artist' : 'title';
 
     const getSearchInfo = searchInput.value;
-
-    // console.log('Search Type:', searchType);
-    // console.log('Search Keyword:', getSearchInfo);
 
     if (searchType == 'title') {
         getMusicTitle(getSearchInfo);
@@ -130,6 +132,18 @@ const getMusicLyrics = async (songInfo) => {
     }
 };
 
+const getMusic = async (songInfo) => {
+    const url = `https://genius-song-lyrics1.p.rapidapi.com/song/details/?id=${songInfo}`;
+    try {
+        const response = await fetch(url, options);
+        const data = await response.json();
+        let musicPlayer = data.song;
+        createPlayer(musicPlayer);
+    } catch (error) {
+        console.error(error);
+    }
+};
+
 const createMusics = (music) => {
     return `
     <li class="item" id="${music.result.id}">
@@ -137,6 +151,7 @@ const createMusics = (music) => {
             <div class="itemText">
                 <h2>${music.result.full_title}</h2>
                 <p class="singer">${music.result.artist_names}</p>
+                <div class="musicPlayer"></div>
                 <div class="lyrics"></div>
             </div>
             <div class="albumImg">
@@ -153,6 +168,7 @@ const createMyMusic = (music) => {
         <div class="itemText">
             <h2>${music.title}</h2>
             <p class="singer">${music.singer}</p>
+            <div class="musicPlayer">${music.musicPlayer}</div>
             <div class="lyrics">${music.lyrics}</div>
         </div>
         <div class="albumImg">
@@ -164,17 +180,26 @@ const createMyMusic = (music) => {
 };
 
 const createLyrics = (lyricsIndex) => {
-    if (lyricsIndex == null) {
-        lyricsWrap.innerHTML = `<p class='nolist'>검색결과가 없습니다.</p>`;
-        return;
-    }
-
     const selectedItem = document.querySelector('.item.on > .itemWrap > .itemText');
     if (selectedItem) {
         const lyricsElement = selectedItem.querySelector('.lyrics');
         lyricsElement.innerHTML = lyricsIndex;
+    } else {
+        lyricsElement.innerHTML = '<p>검색결과가 없습니다.</p>';
     }
 };
+const createPlayer = (musicDetails) => {
+    const selectedItem = document.querySelector('.item.on > .itemWrap > .itemText');
+    const playerWrap = selectedItem.querySelector('.musicPlayer'); 
+    if (selectedItem) {
+        if (musicDetails.apple_music_id == null) {
+            playerWrap.innerHTML = '<p>노래가 없습니다 ㅠㅜ</p>';
+        } else {
+            playerWrap.innerHTML = `<embed src="${musicDetails.apple_music_player_url}" type="audio/mp3"/>`;
+        }
+    }
+};
+
 const renderMusics = (musicList) => {
     if (!musicList || musicList.length === 0) {
         itemList.innerHTML = `<li class='nolist'>검색결과가 없습니다.</li>`;

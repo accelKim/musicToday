@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko-KR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>오늘 뭐 부르지?</title>
+        <link rel="stylesheet" href="./common/my_reset.css" />
+        <script src="./js/login.js" defer></script>
+        <link rel="stylesheet" href="./common/login.css" />
+    </head>
+    <body>
+        <div class="background">
+            <form id="loginForm" class="on">
+                <h1>오늘 뭐 부르지?</h1>
+                <input id="login_id" type="text" placeholder="ID" value="" />
+                <input id="login_pw" type="password" placeholder="Password" autocomplete="current-password" value="" />
+                <div class="btnWrap">
+                    <button id="login_btn" type="button">로그인</button>
+                    <button id="reg" type="button">회원가입</button>
+                </div>
+            </form>
+            <form id="regForm">
+                <h1>오늘 뭐 부르지?</h1>
+                <input id="reg_id" type="text" placeholder="ID" value="" />
+                <input id="reg_pw" type="password" placeholder="pw" autocomplete="current-password" value="" />
+                <input
+                    id="repw"
+                    type="password"
+                    placeholder="Password Check"
+                    autocomplete="current-password"
+                    value=""
+                />
+                <button id="reg_btn" type="button">회원가입</button>
+            </form>
+        </div>
+    </body>
+</html>
