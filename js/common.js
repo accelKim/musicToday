@@ -17,9 +17,23 @@ const options = {
         'X-RapidAPI-Host': 'genius-song-lyrics1.p.rapidapi.com',
     },
 };
+
 window.onload = function () {
-    window.location.href = './page/login.html';
+    if (!isLoggedIn()) {
+        window.location.href = './page/login.html';
+    }
 };
+function isLoggedIn() {
+    const storedName = localStorage.getItem('id');
+    const storedPw = localStorage.getItem('pw');
+
+    if (storedName && storedPw) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 itemList.addEventListener('click', (e) => {
     const clickedAlbumImg = e.target.closest('.albumImg');
     if (clickedAlbumImg) {
@@ -71,7 +85,6 @@ itemList.addEventListener('click', (e) => {
         }
     }
 });
-
 
 footer.addEventListener('click', (e) => {
     const clickedLink = e.target.closest('footer > a');
@@ -193,7 +206,7 @@ const createLyrics = (lyricsIndex) => {
 };
 const createPlayer = (musicDetails) => {
     const selectedItem = document.querySelector('.item.on > .itemWrap > .itemText');
-    const playerWrap = selectedItem.querySelector('.musicPlayer'); 
+    const playerWrap = selectedItem.querySelector('.musicPlayer');
     if (selectedItem) {
         if (musicDetails.apple_music_id == null) {
             playerWrap.innerHTML = '<p>노래가 없습니다 ㅠㅜ</p>';
